@@ -1,18 +1,22 @@
 name: Deploy portfolio to GitHub Pages
 
+
 on:
   push:
     branches: [main]
   workflow_dispatch:
+
 
 permissions:
   contents: read
   pages: write
   id-token: write
 
+
 concurrency:
   group: pages
   cancel-in-progress: true
+
 
 jobs:
   build:
@@ -34,11 +38,12 @@ jobs:
       - name: Build static site
         run: pnpm run build
       - name: Add .nojekyll
-        run: touch dist/.nojekyll
+        run: touch dist/client/.nojekyll
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: dist
+          path: dist/client
+
 
   deploy:
     environment:
@@ -50,3 +55,4 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
