@@ -39,28 +39,29 @@ export const projects = [
       "A tightly paced security facility where routing, backtracking, and tactical pressure work as one system.",
   },
   {
-    slug: "pit-stop",
-    number: "04",
-    title: "Half-Life 2: Pit Stop",
-    engine: "Hammer",
-    role: "Level Designer",
-    subtitle: "Encounter design",
-    image:
-      "https://images.squarespace-cdn.com/content/v1/6a414942f5d99e4efb38d03f/075beb49-c28f-4286-befa-6a8c11191fb2/%E5%B7%B2%E7%94%9F%E6%88%90%E5%9B%BE%E5%83%8F+1+%281%29.png?format=1000w",
-    description:
-      "A compact action level focused on encounter staging, readable cover, and purposeful movement.",
-  },
-  {
     slug: "kill-the-makers",
-    number: "05",
+    number: "04",
     title: "Kill the Makers",
     engine: "Unity",
     role: "Game, Level & Audio Designer",
     subtitle: "2D puzzle-platformer",
     image:
-      "https://images.squarespace-cdn.com/content/v1/6a414942f5d99e4efb38d03f/71b4cc97-458a-4a6c-a80d-43c4550e7c69/%E5%B7%B2%E7%94%9F%E6%88%90%E5%9B%BE%E5%83%8F+1+%283%29.png?format=1000w",
+      "https://images.squarespace-cdn.com/content/v1/6a414942f5d99e4efb38d03f/075beb49-c28f-4286-befa-6a8c11191fb2/%E5%B7%B2%E7%94%9F%E6%88%90%E5%9B%BE%E5%83%8F+1+%281%29.png?format=1000w",
     description:
       "A puzzle-platformer that teaches its rules through spatial composition, sound cues, and iteration.",
+  },
+  {
+    slug: "pit-stop",
+    number: "05",
+    title: "Half-Life 2: Pit Stop",
+    engine: "Hammer",
+    role: "Level Designer",
+    subtitle: "Encounter design",
+    image:
+      "https://images.squarespace-cdn.com/content/v1/6a414942f5d99e4efb38d03f/71b4cc97-458a-4a6c-a80d-43c4550e7c69/%E5%B7%B2%E7%94%9F%E6%88%90%E5%9B%BE%E5%83%8F+1+%283%29.png?format=1000w",
+    description:
+      "A compact action level focused on encounter staging, readable cover, and purposeful movement.",
+    underConstruction: true,
   },
 ];
 
@@ -68,10 +69,6 @@ export function SiteShell({ children }: { children: ReactNode }) {
   return (
     <div className="site-shell">
       <header className="site-header">
-        <Link className="brand" href="/" aria-label="Ruichi Li home">
-          <span className="brand-mark">RL</span>
-          <span>RUICHI LI</span>
-        </Link>
         <nav className="main-nav" aria-label="Primary navigation">
           <Link href="/">Home</Link>
           <div className="project-nav">
@@ -88,43 +85,36 @@ export function SiteShell({ children }: { children: ReactNode }) {
           <Link href="/resume">Resume</Link>
           <Link href="/contact">Contact</Link>
         </nav>
-        <Link href="/contact" className="header-cta">Let&apos;s talk <span>↗</span></Link>
+        <Link className="brand" href="/" aria-label="Ruichi Li home"><span>RUICHI LI</span></Link>
       </header>
       <main>{children}</main>
       <footer className="site-footer">
-        <div><span className="eyebrow">AVAILABLE FOR COLLABORATION</span><strong>Let&apos;s make player movement feel inevitable.</strong></div>
-        <div className="footer-links"><a href="mailto:ruichil1030@gmail.com">Email</a><a href="https://www.linkedin.com/in/ruichi-li-9903372b1/" target="_blank">LinkedIn ↗</a></div>
+        <div className="footer-links"><Link href="/">Home Page</Link><Link href="/contact">Contact</Link><Link href="/about">About Me</Link></div>
       </footer>
     </div>
   );
 }
 
 function ProjectCard({ project }: { project: (typeof projects)[number] }) {
-  return (
-    <Link className="project-card" href={`/projects/${project.slug}`}>
+  const card = (
+    <>
       <img src={project.image} alt={`${project.title} project cover`} />
       <div className="project-card-shade" />
+      {project.underConstruction && <div className="construction-label">UNDER CONSTRUCTION</div>}
       <div className="project-top"><span>{project.number}</span><span>{project.engine}</span></div>
-      <div className="project-bottom"><p>{project.role}</p><h3>{project.title}</h3><span className="card-arrow">↗</span></div>
-    </Link>
+      <div className="project-bottom"><p>{project.role}</p><h3>{project.title}</h3>{!project.underConstruction && <span className="card-arrow">↗</span>}</div>
+    </>
   );
+  return project.underConstruction ? <div className="project-card project-card-disabled">{card}</div> : <Link className="project-card" href={`/projects/${project.slug}`}>{card}</Link>;
 }
 
 export function HomePage() {
   return (
     <SiteShell>
-      <section className="hero">
-        <div className="hero-orbit orbit-one" /><div className="hero-orbit orbit-two" />
-        <p className="eyebrow hero-kicker"><i /> LEVEL DESIGNER · GAMEPLAY THINKER</p>
-        <h1>Spaces that <em>teach,</em><br />routes that <em>matter.</em></h1>
-        <div className="hero-foot"><p>Creating memorable player journeys through deliberate composition, pacing, and environmental storytelling.</p><a href="#work">Explore selected work <span>↓</span></a></div>
-      </section>
+      <section className="home-intro"><p className="eyebrow">LEVEL DESIGNER &amp; GAMEPLAY DESIGNER</p></section>
       <section className="work-section" id="work">
-        <div className="section-heading"><span className="eyebrow">SELECTED WORK / 2024—26</span><h2>Designed for <em>momentum.</em></h2><p>Each project starts with a player question: Where should they look, move, and feel challenged next?</p></div>
-        <div className="project-grid">{projects.slice(0, 4).map((project) => <ProjectCard key={project.slug} project={project} />)}</div>
-        <div className="project-feature"><ProjectCard project={projects[4]} /><div><span className="eyebrow">SYSTEMS + SENSATION</span><h2>Every mechanic deserves a <em>place</em> to shine.</h2><Link href="/projects" className="text-link">View all projects <span>→</span></Link></div></div>
+        <div className="project-grid">{projects.map((project) => <ProjectCard key={project.slug} project={project} />)}</div>
       </section>
-      <section className="approach"><div className="approach-label"><span className="eyebrow">DESIGN PRINCIPLES</span><p>Three lenses I bring to every playable space.</p></div><div className="principles"><article><span>01</span><h3>Guide without pointing.</h3><p>Sightlines, contrast, and composition make the intended path feel like the player&apos;s choice.</p></article><article><span>02</span><h3>Escalate with purpose.</h3><p>Encounters earn intensity through pacing, anticipation, and a clean release of pressure.</p></article><article><span>03</span><h3>Let the world speak.</h3><p>Environmental details carry narrative weight before a single line of dialogue is needed.</p></article></div></section>
     </SiteShell>
   );
 }
