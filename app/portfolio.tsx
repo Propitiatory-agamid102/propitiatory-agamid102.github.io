@@ -65,14 +65,16 @@ export const projects = [
   },
 ];
 
-export function SiteShell({ children }: { children: ReactNode }) {
+export function SiteShell({ children, activePath = "/" }: { children: ReactNode; activePath?: string }) {
+  const active = (path: string) => activePath === path ? "active" : "";
+  const projectsActive = activePath === "/projects" ? "active" : "";
   return (
     <div className="site-shell">
       <header className="site-header">
         <nav className="main-nav" aria-label="Primary navigation">
-          <Link href="/">Home</Link>
+          <Link className={active("/")} href="/">Home</Link>
           <div className="project-nav">
-            <span className="project-trigger">Projects <span>+</span></span>
+            <span className={`project-trigger ${projectsActive}`}>Projects <span>+</span></span>
             <div className="project-menu">
               {projects.map((project) => (
                 <Link key={project.slug} href={`/projects/${project.slug}`}>
@@ -81,9 +83,9 @@ export function SiteShell({ children }: { children: ReactNode }) {
               ))}
             </div>
           </div>
-          <Link href="/about">About</Link>
-          <Link href="/resume">Resume</Link>
-          <Link href="/contact">Contact</Link>
+          <Link className={active("/about")} href="/about">About</Link>
+          <Link className={active("/resume")} href="/resume">Resume</Link>
+          <Link className={active("/contact")} href="/contact">Contact</Link>
         </nav>
         <Link className="brand" href="/" aria-label="Ruichi Li home"><span>RUICHI LI</span></Link>
         <div className="header-socials" aria-label="Contact links">
@@ -114,7 +116,7 @@ function ProjectCard({ project }: { project: (typeof projects)[number] }) {
 
 export function HomePage() {
   return (
-    <SiteShell>
+    <SiteShell activePath="/">
       <section className="home-intro"><p className="eyebrow">LEVEL DESIGNER &amp; GAMEPLAY DESIGNER</p></section>
       <section className="work-section" id="work">
         <div className="project-grid">{projects.map((project) => <ProjectCard key={project.slug} project={project} />)}</div>
@@ -124,27 +126,27 @@ export function HomePage() {
 }
 
 export function ProjectsPage() {
-  return <SiteShell><section className="page-intro"><span className="eyebrow">PROJECT INDEX / 05</span><h1>Playable spaces,<br /><em>built with intent.</em></h1><p>Level and gameplay work across racing, action, exploration, and puzzle-platforming.</p></section><section className="project-index">{projects.map((project) => <ProjectCard key={project.slug} project={project} />)}</section></SiteShell>;
+  return <SiteShell activePath="/projects"><section className="page-intro"><span className="eyebrow">PROJECT INDEX / 05</span><h1>Playable spaces,<br /><em>built with intent.</em></h1><p>Level and gameplay work across racing, action, exploration, and puzzle-platforming.</p></section><section className="project-index">{projects.map((project) => <ProjectCard key={project.slug} project={project} />)}</section></SiteShell>;
 }
 
 export function ProjectPage({ project }: { project: (typeof projects)[number] }) {
-  return <SiteShell><section className="project-hero"><img src={project.image} alt="" /><div className="project-hero-shade" /><div className="project-hero-copy"><span className="eyebrow">{project.number} / {project.engine}</span><h1>{project.title}</h1><p>{project.description}</p></div></section><section className="case-study"><aside><span className="eyebrow">ROLE</span><strong>{project.role}</strong><span className="eyebrow">FOCUS</span><strong>{project.subtitle}</strong></aside><div><span className="eyebrow">DESIGN INTENT</span><h2>Making every decision legible, expressive, and satisfying to play.</h2><p>This case study presents the level-design thinking behind the project: creating clear player goals, using spatial composition to support momentum, and iterating from playtest feedback.</p><div className="case-rule" /><p>From the first route sketch to the final encounter pass, the aim is the same: make the next meaningful decision feel visible, but never forced.</p></div></section></SiteShell>;
+  return <SiteShell activePath="/projects"><section className="project-hero"><img src={project.image} alt="" /><div className="project-hero-shade" /><div className="project-hero-copy"><span className="eyebrow">{project.number} / {project.engine}</span><h1>{project.title}</h1><p>{project.description}</p></div></section><section className="case-study"><aside><span className="eyebrow">ROLE</span><strong>{project.role}</strong><span className="eyebrow">FOCUS</span><strong>{project.subtitle}</strong></aside><div><span className="eyebrow">DESIGN INTENT</span><h2>Making every decision legible, expressive, and satisfying to play.</h2><p>This case study presents the level-design thinking behind the project: creating clear player goals, using spatial composition to support momentum, and iterating from playtest feedback.</p><div className="case-rule" /><p>From the first route sketch to the final encounter pass, the aim is the same: make the next meaningful decision feel visible, but never forced.</p></div></section></SiteShell>;
 }
 
 export function AboutPage() {
-  return <SiteShell><section className="page-intro about-intro"><span className="eyebrow">ABOUT / RUICHI LI</span><h1>I design the <em>feeling</em><br />of finding your way.</h1><p>Level Designer and Master of Interactive Technology candidate at SMU Guildhall, building environments where clear play and strong atmosphere reinforce each other.</p></section><section className="bio-grid"><div className="bio-panel"><span className="eyebrow">CURRENTLY</span><h2>Studying Level Design at SMU Guildhall.</h2><p>Expected graduation: May 2027</p></div><div className="bio-panel muted"><span className="eyebrow">BACKGROUND</span><h2>From Jiangsu, China to Dallas, Texas.</h2><p>Bachelor of Internet of Things, Hohai University · June 2024</p></div></section><section className="toolkit"><span className="eyebrow">TOOLKIT</span><div><h2>Unreal Engine 5 · Unity · Hammer · Creation Kit</h2><p>Whitebox-to-shipped pipelines, player flow, encounter pacing, environmental storytelling, Perforce, Jira, C#, C++, Python, 3ds Max, Illustrator.</p></div></section></SiteShell>;
+  return <SiteShell activePath="/about"><section className="page-intro about-intro"><span className="eyebrow">ABOUT / RUICHI LI</span><h1>I design the <em>feeling</em><br />of finding your way.</h1><p>Level Designer and Master of Interactive Technology candidate at SMU Guildhall, building environments where clear play and strong atmosphere reinforce each other.</p></section><section className="bio-grid"><div className="bio-panel"><span className="eyebrow">CURRENTLY</span><h2>Studying Level Design at SMU Guildhall.</h2><p>Expected graduation: May 2027</p></div><div className="bio-panel muted"><span className="eyebrow">BACKGROUND</span><h2>From Jiangsu, China to Dallas, Texas.</h2><p>Bachelor of Internet of Things, Hohai University · June 2024</p></div></section><section className="toolkit"><span className="eyebrow">TOOLKIT</span><div><h2>Unreal Engine 5 · Unity · Hammer · Creation Kit</h2><p>Whitebox-to-shipped pipelines, player flow, encounter pacing, environmental storytelling, Perforce, Jira, C#, C++, Python, 3ds Max, Illustrator.</p></div></section></SiteShell>;
 }
 
 export function ResumePage() {
-  const entries = [
-    ["2026", "Hamsterballin’", "Level Designer · Unreal Engine 5", "Owned the Tunnel in Roulette Runway; balanced pickups and hazards to guide sightlines, reward risk, and pace the race."],
-    ["2025", "Kill the Makers", "Game, Level & Audio Designer · Unity", "Created puzzle-platformer levels that onboard players through hazards, platform placement, custom SFX, and playtest-driven tuning."],
-    ["2024", "Starfield: Firefly", "Level Designer · Creation Kit", "Built a modular medical lab with circular combat flow, scripted events, NPC behaviors, and environmental storytelling."],
-    ["2024", "Half-Life 2: Black Site", "Level Designer · Hammer", "Designed routing, lock-and-key progression, mission logic, and tactical Combine encounters."],
-  ];
-  return <SiteShell><section className="page-intro resume-intro"><span className="eyebrow">RESUME / SELECTED EXPERIENCE</span><h1>Build the route.<br /><em>Shape the moment.</em></h1><a className="solid-button" href="mailto:ruichil1030@gmail.com?subject=Resume%20request">Request PDF resume <span>↗</span></a></section><section className="resume-list">{entries.map(([year, title, role, copy]) => <article key={title}><span>{year}</span><div><h2>{title}</h2><strong>{role}</strong><p>{copy}</p></div></article>)}</section><section className="resume-skills"><span className="eyebrow">SKILLS</span><p>Unreal Engine 5 · Unity · Starfield Creation Kit · Source Engine: Hammer · C · C++ · C# · Java · Python · Perforce · Jira · 3ds Max · Illustrator</p></section></SiteShell>;
+  return <SiteShell activePath="/resume"><section className="resume-page">
+    <header className="resume-header"><h1>Ruichi Li</h1><p>Level Designer</p><p>Dallas, TX | 872-377-8884 | <a href="mailto:ruichil1030@gmail.com">ruichil1030@gmail.com</a> | <a href="https://www.linkedin.com/in/ruichi-li-9903372b1/" target="_blank" rel="noreferrer">LinkedIn</a></p></header>
+    <section className="resume-section"><h2>SHIPPED TITLES</h2><article className="resume-entry"><div className="resume-entry-title"><h3>Hamsterballin&apos;</h3><span>Unreal Engine 5</span></div><strong>Level Designer <i>February 2026 - May 2026</i></strong><p>Level Designer, specifically owning the Tunnel in Roulette Runway.</p><p>Strategically placed and balanced all level pickups and interactive hazards, utilizing item placement to naturally guide player sightlines, reward high-risk maneuvers, and control the pacing of the race.</p><p>Executed rapid level iterations by analyzing playtest telemetry and user feedback. Collaborated within a cross-disciplinary team of artists and programmers under the Guildhall Development Methodology, utilizing Perforce (P4V) for asset pipeline management and Jira to track sprints and meet tight milestones.</p></article></section>
+    <section className="resume-section"><h2>PROJECTS</h2><article className="resume-entry"><div className="resume-entry-title"><h3>Kill the Makers</h3><span>Unity</span></div><strong>Game Designer, Level Designer specifically owning Levels 1, 2 and 3, Audio Designer.</strong><p>Architected 2D puzzle-platformer layouts, strategically placing hazards and platforms to onboard players and teach core mechanics; integrated custom SFX via Adobe Audition to provide critical audio feedback for puzzles.</p><p>Collaborated to rapidly iterate on physics and jump metrics, utilizing playtest data to fine-tune character controls, platform spacing, and difficulty curves.</p></article><article className="resume-entry"><div className="resume-entry-title"><h3>Starfield custom level: Firefly</h3><span>Starfield: Creation Kit</span></div><p>Architected a modular medical lab environment within the Starfield Creation Kit, applying advanced 3D layout techniques to establish a circular combat flow and optimize player navigation.</p><p>Programmed scripted events, NPC behaviors, and narrative terminal entries, leveraging the engine&apos;s internal quest logic to deliver seamless environmental storytelling and immersive world-building.</p></article><article className="resume-entry"><div className="resume-entry-title"><h3>Half-Life 2 custom level: Black Site</h3><span>Hammer</span></div><p>Designed structured level routing and progression loops within the Hammer Editor, implementing lock-and-key gating puzzles that challenge players to navigate, backtrack, and unlock restricted sectors.</p><p>Programmed robust mission logic and encounter sequencing using Hammer&apos;s I/O entity system, scripting custom triggers, door/gate interactions, and Combine AI tactical spawns to match original pacing standards.</p></article></section>
+    <section className="resume-section"><h2>EDUCATION</h2><article className="resume-entry"><div className="resume-entry-title"><h3>SMU Guildhall</h3><span>Dallas, TX</span></div><strong>Master of Interactive Technology, Specialization in Level Design</strong><p>Expected May 2027</p></article><article className="resume-entry"><div className="resume-entry-title"><h3>Hohai University</h3><span>Jiangsu, China</span></div><strong>Bachelor of Internet of Things</strong><p>June 2024</p></article></section>
+    <section className="resume-section"><h2>SKILLS</h2><div className="resume-skills-copy"><p><strong>Software &amp; Engines:</strong> Unreal Engine 5, Starfield: Creation Kit, Source Engine: Hammer, Unity</p><p><strong>Methodologies &amp; Concepts:</strong> Whitebox-to-Shipped Level Pipeline, Spatial Composition &amp; Sightlines, Environmental Storytelling, Pacing &amp; Combat Encounters, Player Flow Design</p><p><strong>Languages &amp; Tools:</strong> C, C++, C#, Java, Python, 3dsMax, Illustrator, Miro, Canva, Perforce, Jira</p><p><strong>Professional:</strong> Native in Mandarin, Professionally Fluent in English, Rapid Prototyping &amp; Iteration, Avid player of tactical shooters and racing games</p></div></section>
+  </section></SiteShell>;
 }
 
 export function ContactPage() {
-  return <SiteShell><section className="contact-page"><div className="contact-content"><h1>Get in Touch!</h1><p>I’m always open to discussing new opportunities, creative projects, or interesting ideas. Feel free to use the form or connect with me on social media.</p><a className="contact-email" href="mailto:ruichil1030@gmail.com">ruichil1030@gmail.com</a><a className="contact-phone" href="tel:+18723778884">(872) 377-8884</a><div className="contact-meta"><a href="mailto:ruichil1030@gmail.com" aria-label="Email Ruichi Li">✉</a><a href="https://www.linkedin.com/in/ruichi-li-9903372b1/" target="_blank" rel="noreferrer" aria-label="Ruichi Li on LinkedIn">in</a></div></div></section></SiteShell>;
+  return <SiteShell activePath="/contact"><section className="contact-page"><div className="contact-content"><h1>Get in Touch!</h1><p>I’m always open to discussing new opportunities, creative projects, or interesting ideas. Feel free to use the form or connect with me on social media.</p><a className="contact-email" href="mailto:ruichil1030@gmail.com">ruichil1030@gmail.com</a><a className="contact-phone" href="tel:+18723778884">(872) 377-8884</a><div className="contact-meta"><a href="mailto:ruichil1030@gmail.com" aria-label="Email Ruichi Li">✉</a><a href="https://www.linkedin.com/in/ruichi-li-9903372b1/" target="_blank" rel="noreferrer" aria-label="Ruichi Li on LinkedIn">in</a></div></div></section></SiteShell>;
 }
