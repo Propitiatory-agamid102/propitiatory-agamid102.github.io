@@ -37,6 +37,8 @@ jobs:
         run: pnpm install --frozen-lockfile --ignore-scripts
       - name: Build static site
         run: pnpm run build
+      - name: Add stable stylesheet fallback
+        run: cp dist/client/assets/*.css dist/client/styles.css
       - name: Add .nojekyll
         run: touch dist/client/.nojekyll
       - name: Upload Pages artifact
