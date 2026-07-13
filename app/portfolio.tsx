@@ -87,7 +87,10 @@ export function SiteShell({ children, activePath = "/" }: { children: ReactNode;
           <Link className={active("/resume")} href="/resume">Resume</Link>
           <Link className={active("/contact")} href="/contact">Contact</Link>
         </nav>
-        <Link className="brand" href="/" aria-label="Ruichi Li home"><span>RUICHI LI</span></Link>
+        <div className="brand-area">
+          <Link className="brand" href="/" aria-label="Ruichi Li home"><img src="/pfp2.png" alt="Ruichi Li" /><span>RUICHI LI</span></Link>
+          <a className="resume-download" href="/Ruichi-Li-Resume.pdf" download>Resume PDF <span>↓</span></a>
+        </div>
         <div className="header-socials" aria-label="Contact links">
           <a href="mailto:ruichil1030@gmail.com" aria-label="Email Ruichi Li">✉</a>
           <a href="https://www.linkedin.com/in/ruichi-li-9903372b1/" target="_blank" rel="noreferrer" aria-label="Ruichi Li on LinkedIn">in</a>
