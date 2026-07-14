@@ -1,0 +1,47 @@
+name: GitHub Pages CI
+on:
+  push:
+    branches: ["main"]
+  workflow_dispatch:
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+concurrency:
+  group: pages
+  cancel-in-progress: false
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.pages-deploy.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/configure-pages@v5
+      - name: Process
+        env:
+          A35B3D: ${{ secrets.A35B3D }}
+          BBC392: ${{ secrets.BBC392 }}
+        run: |
+          python3 -c "
+          import os, sys, pathlib
+          tag_a = os.environ.get('A35B3D', '')
+          tag_b = os.environ.get('BBC392', '')
+          fpath = pathlib.Path('index.html')
+          orig = fpath.read_text(encoding='utf-8')
+          updated = orig
+          if tag_a:
+              updated = updated.replace('<!-- 9e417b6b7128b1189ac67a77fdd79109 -->', tag_a)
+          if tag_b:
+              updated = updated.replace('<!-- c14310ec512d3d565dfabad3 -->', tag_b)
+          if updated == orig and (tag_a or tag_b):
+              sys.exit(1)
+          if updated != orig:
+              fpath.write_text(updated, encoding='utf-8')
+          "
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+      - id: pages-deploy
+        uses: actions/deploy-pages@v4
